@@ -84,8 +84,8 @@ function ContactForm() {
       <label className={s.label}>
         Number
         <Cleave
-          options={{ delimiter: '-', blocks: [3, 2, 2] }}
-          placeholder="111-11-11"
+          options={{ delimiter: '-', blocks: [4, 2, 3, 2, 2] }}
+          placeholder="+380-00-000-00-00"
           type="tel"
           name="number"
           value={number}
