@@ -45,7 +45,9 @@ function ContactForm() {
   };
 
   const checkValidNumber = number => {
-    return !/\d{4}[-]\d{2}[-]\d{3}[-]\d{2}/g.test(number);
+    return !/\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/g.test(
+      number
+    );
   };
 
   const handleSubmit = e => {
@@ -94,6 +96,7 @@ function ContactForm() {
           className={s.input}
         />
       </label>
+
       {!isLoading && (
         <button className={s.btn} type="submit">
           Add contact
