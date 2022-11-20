@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addContact } from '../../redux/contacts/contacts-action';
-import { getContacts } from '../../redux/contacts/contacts-selector';
+import { contactsOperations, contactsSelectors } from '../../redux/contacts';
 import Cleave from 'cleave.js/react';
 import { toast } from 'react-toastify';
+import LoaderComponent from '../LoaderComponent/LoaderComponent';
 import s from './ContactForm.module.css';
 
 function ContactForm() {
   const dispatch = useDispatch();
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(contactsSelectors.getContacts);
+  const isLoading = useSelector(contactsSelectors.getLoading);
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -44,7 +45,7 @@ function ContactForm() {
   };
 
   const checkValidNumber = number => {
-    return !/\d{3}[-]\d{2}[-]\d{2}/g.test(number);
+    return !/\d{4}[-]\d{2}[-]\d{3}[-]\d{2}/g.test(number);
   };
 
   const handleSubmit = e => {
@@ -58,7 +59,7 @@ function ContactForm() {
     } else if (checkValidNumber(number)) {
       toast.error('💩 Enter the correct number phone!');
     } else {
-      dispatch(addContact(name, number));
+      dispatch(contactsOperations.addContact(name, number));
     }
     resetInput();
   };
@@ -93,9 +94,12 @@ function ContactForm() {
           className={s.input}
         />
       </label>
-      <button className={s.btn} type="submit">
-        Add contact
-      </button>
+      {!isLoading && (
+        <button className={s.btn} type="submit">
+          Add contact
+        </button>
+      )}
+      {isLoading && <LoaderComponent />}
     </form>
   );
 }

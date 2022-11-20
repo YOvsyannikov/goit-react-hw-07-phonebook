@@ -1,33 +1,37 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { filterContact } from '../../redux/contacts/contacts-action';
-import { getFilter, getContacts } from '../../redux/contacts/contacts-selector';
-import { CSSTransition } from 'react-transition-group';
-import popTransition from '../../utils/transactions/pop.module.css';
+import { contactsActions, contactsSelectors } from '../../redux/contacts';
+import { motion, AnimatePresence } from 'framer-motion';
+import { variants } from '../../utils/motionVar';
 import s from './Filter.module.css';
 
 function Filter() {
   const dispatch = useDispatch();
-  const filter = useSelector(getFilter);
-  const contacts = useSelector(getContacts);
+  const filter = useSelector(contactsSelectors.getFilter);
+  const contacts = useSelector(contactsSelectors.getContacts);
+  const error = useSelector(contactsSelectors.getError);
 
   return (
-    <CSSTransition
-      in={contacts.length > 0}
-      timeout={250}
-      classNames={popTransition}
-      mountOnEnter
-      unmountOnExit
-    >
-      <label className={s.label}>
-        Find contacts by name
-        <input
-          className={s.input}
-          type="text"
-          value={filter}
-          onChange={e => dispatch(filterContact(e.target.value))}
-        />
-      </label>
-    </CSSTransition>
+    <>
+      {contacts.length > 0 && !error && (
+        <AnimatePresence>
+          <label className={s.label}>
+            <motion.input
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition="transition"
+              variants={variants}
+              className={s.input}
+              type="text"
+              value={filter}
+              onChange={e =>
+                dispatch(contactsActions.filterContact(e.target.value))
+              }
+            />
+          </label>
+        </AnimatePresence>
+      )}
+    </>
   );
 }
 
