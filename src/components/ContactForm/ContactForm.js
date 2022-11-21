@@ -45,7 +45,7 @@ function ContactForm() {
   };
 
   const checkValidNumber = number => {
-    return !/\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/g.test(
+    return !/\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}/g.test(
       number
     );
   };
@@ -62,8 +62,8 @@ function ContactForm() {
       toast.error('💩 Enter the correct number phone!');
     } else {
       dispatch(contactsOperations.addContact(name, number));
+      resetInput();
     }
-    resetInput();
   };
 
   const resetInput = () => {
